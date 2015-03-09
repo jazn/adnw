@@ -11,7 +11,7 @@
 
 MCU=$( grep "^MCU\s*=" makefile | sed "s/.*=\s*//")
 HEX=$( grep "^TARGET\s*=" makefile | sed "s/.*=\s*//")
-KB=$( grep "^KB_HW\s*=" makefile | sed "s/.*=\s*//")
+# KB=$( grep "^KB_HW\s*.=" makefile | sed "s/.*=\s*//")
 
 mv $HEX.hex $HEX.hex.old 2>/dev/null
 
@@ -22,7 +22,9 @@ if [ ! -z $1 ]; then
 	make clean >> log
 fi
 echo "*** make " &&
-make >> log 2>log.err &&
+make >> log 2>log.err || { tail -n 10 log.err; echo "*** BUILD FAILED, see log.err." ; exit 2; }
+
+KB=$(grep "KB_HW defined" log | sed "s/^.*defined as //")
 
 if [ -f $HEX.hex ]; then 
   echo "*** Now flashing $KB ($MCU) with $HEX.hex ..." &

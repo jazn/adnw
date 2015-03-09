@@ -26,7 +26,7 @@ SRCDIR       = ./src
 #KB_HW		 = BLUECUBE
 #KB_HW		 = HYPERNANO
 #KB_HW		 = REDTILT
-KB_HW		 = HYPERMICRO
+KB_HW		 ?= HYPERMICRO
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC =   $(LUFA_SRC_USB)          \
@@ -89,7 +89,7 @@ endif
 CC_FLAGS    += -DFW_VERSION=\"$(FW_VERSION)\"
 
 # Default target
-all: lufacheck # macrocheck
+all: lufacheck configtest # macrocheck
 
 
 # test macro existance
@@ -108,6 +108,15 @@ lufacheck:
 	else \
 		echo -e "*** ERROR: LUFA/LUFA missing - see README for install instructions.\n***        Try to checkout LUFA source with\n***            git submodule init && git submodule update\n\n"; false;\
 	fi
+
+configtest:
+# check that KB_HW is defined
+ifeq ($(origin KB_HW), undefined)
+	$(error "KB_HW undefined. Either set in environment or makefile")
+else
+	@echo "*** KB_HW defined as ${KB_HW} from $(origin KB_HW)"
+endif
+
 
 ifneq (,$(findstring DEBUG_OUTPUT,$(CC_FLAGS)))
 	@echo "*** DEBUG is defined" ; 
