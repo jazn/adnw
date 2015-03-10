@@ -125,20 +125,6 @@ else
 endif
 
 
-# check whether scrollwheel support is requested and complete
-ifneq (,$(findstring MOUSE_HAS_SCROLL_WHEELS,$(CC_FLAGS)))
-	@echo "*** SCROLLWHEEL defined"; \
-	if [ `grep -c "Vertical" LUFA/LUFA/Drivers/USB/Class/Common/HIDClassCommon.h` -eq 1 ] ; then \
-	    echo "*** and LUFA seems patched, ok"; \
-	else \
-	    echo "*** ERROR: but LUFA not patched for it - run "; \
-	    echo -e "*** patch -Np1 -i LUFA-scrollwheel.patch \n*** to fix \n" ; \
-	    false; \
-	fi
-else
-	@echo "*** SCROLLWHEEL not defined"
-endif
-
 
 # Include LUFA build script makefiles
 # lines begin with "-" so if not found, the lufacheck above prints message 
