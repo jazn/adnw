@@ -59,12 +59,12 @@ LD_FLAGS     =
 
 ifneq (,$(findstring REDTILT,$(CC_FLAGS)))
 CC_FLAGS    += -DTP_ROTATE
-CC_FLAGS    += -DPS2MOUSE -DMOUSE_HAS_SCROLL_WHEELS
+CC_FLAGS    += -DPS2MOUSE
 endif
 
 ifneq (,$(findstring HYPERNANO,$(CC_FLAGS)))
 CC_FLAGS    += -DPINKYDROP
-CC_FLAGS    += -DPS2MOUSE -DMOUSE_HAS_SCROLL_WHEELS
+CC_FLAGS    += -DPS2MOUSE
 endif
 
 ifneq (,$(findstring DEBUG_OUTPUT,$(CC_FLAGS)))
