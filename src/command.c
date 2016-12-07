@@ -29,7 +29,7 @@
 #endif
 #include "macro.h"
 
-bool command=false;
+bool g_cmd_mode_active=false;
 
 #define TAGLEN 8
 char tag[TAGLEN+1];
@@ -50,19 +50,20 @@ static uint8_t subcmd;           ///< currently active subcommand
 
 void setCommandMode(bool on)
 {
-    if(on!=command) {
+    if(on!=g_cmd_mode_active) {
         if(on) {
             led_save = g_led;
             g_led = (led_t) { .brightness=5, .on=30,  .off=30 };
         } else {
             g_led = led_save;
         }
+
+        g_cmd_mode_active=on;
+        subcmd = SUB_NONE;
     }
-    command=on;
-    subcmd = SUB_NONE;
 }
 
-bool commandMode(void) { return command; }
+bool commandMode(void) { return g_cmd_mode_active; }
 void handleSubCmd(char c);
 
 
