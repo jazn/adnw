@@ -43,7 +43,9 @@ enum {
     SUB_LAYOUT,
     SUB_MACRO,
     SUB_MACRO_REC,
-    SUB_PASSHASH
+    SUB_PASSHASH,
+    SUB_CONFIG,
+    SUB_END
 };
 
 static uint8_t subcmd;           ///< currently active subcommand
@@ -130,7 +132,10 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
         case 'b':
             jump_bootloader();
             break;
-
+        case 'c': 
+            subcmd=SUB_CONFIG;
+            break;
+            
 /// @todo Trackpoint availability
 #ifdef PS2MOUSE
         case 't':
@@ -170,9 +175,6 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
             break;
 
         default:
-            #ifdef HAS_LED
-                printf("\nLED: %d/%d@%d",led_save.on, led_save.off, led_save.brightness);
-            #endif
             setCommandMode(false);
             break;
     }
@@ -221,6 +223,29 @@ void handleSubCmd(char c)
                 memset(tag,0,TAGLEN);
             }
             break;
+        
+        case SUB_CONFIG:
+            #ifdef HAS_LED
+                printf("\nLED: %d/%d@%d",led_save.on, led_save.off, led_save.brightness);
+            #endif
+
+            switch(c) {
+              #ifdef HAS_LED
+                // Operate on the saved config that will be restored when leaving command mode
+                case 'j': led_save.off = (led_save.off-5) % 256; break;
+                case 'J': led_save.off = (led_save.off+5) % 256; break;
+                case 'o': led_save.on = (led_save.on-5) % 256; break;
+                case 'O': led_save.on = (led_save.on+5) % 256; break;
+                case 'e': led_save.brightness = (led_save.brightness-5) % 256; break;
+                case 'E': led_save.brightness = (led_save.brightness+5) % 256; break;
+              #endif
+
+                case 'q':
+                default:
+                    setCommandMode(false);
+                    break;    
+            }
+            break; // allow consecutive changes to variables
 
         default:
             setCommandMode(false);
