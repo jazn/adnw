@@ -24,6 +24,7 @@
 #include<avr/io.h>
 #include<util/delay.h>
 
+#include "config.h"
 #include "pstwo.h"
 
 // >42590 to register connected TP correctly
@@ -107,6 +108,7 @@ bool send_packet(uint8_t byte)
         clk(0);
         _delay_us(PS2_DELAY);
         data(0); //Start
+        _delay_us(PS2_DELAY/2);
         clk(1);
         CDDR &= ~(1 << CBIT); // Release clock
         CPORT |= (1 << CBIT); //Set the pull up on Clock
