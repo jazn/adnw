@@ -40,10 +40,10 @@ POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include <stdbool.h>
-#include "wait.h"
+// #include "wait.h"
 #include "ps2.h"
 #include "ps2_io.h"
-#include "debug.h"
+// #include "debug.h"
 
 
 #define WAIT(stat, us, err) do { \
