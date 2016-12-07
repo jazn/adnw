@@ -45,6 +45,7 @@ LUFA_PATH    = LUFA/LUFA
 CC_FLAGS     = -DUSE_LUFA_CONFIG_HEADER -IConfig/
 #CC_FLAGS    += -DDEBUG_OUTPUT
 CC_FLAGS    += -fdata-sections 
+CC_FLAGS    += -Werror
 CC_FLAGS	+= -DKB_HW=$(KB_HW) -D$(KB_HW)
 LD_FLAGS     =
 
