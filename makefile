@@ -39,6 +39,7 @@ SRC =   $(LUFA_SRC_USB)          \
 	$(SRCDIR)/passhash/sha1.c    \
 	$(SRCDIR)/passhash/hmac-sha1.c  \
 	$(SRCDIR)/passhash/passhash.c  \
+	$(SRCDIR)/global_config.c      \
 
 
 LUFA_PATH    = LUFA/LUFA
