@@ -35,21 +35,20 @@
  *  .
  *  @todo Enable pre-loading under certain conditions via *.eep like with _private_macros.c previously?
 */
-#define MACROCOUNT   6
-#define OUTSTR_MAX_LEN    40
+#define MACROCOUNT        6
+#define MACRO_MAX_LEN    40
 
 #define EEPROM_DEF 0xFF
 
 #define EE_ADDR_START       100
 #define EE_ADDR_MACROS      (EE_ADDR_START+100)
-#define EE_ADDR_MACRO(idx)  (EE_ADDR_MACROS + (idx*(OUTSTR_MAX_LEN+1)))
+#define EE_ADDR_MACRO(idx)  (EE_ADDR_MACROS + (idx*(MACRO_MAX_LEN+1)))
 
-uint8_t updateEEMacroHID(const uint8_t macro[OUTSTR_MAX_LEN], uint8_t idx);
-uint8_t readEEMacroHID  (uint8_t macro[OUTSTR_MAX_LEN], uint8_t idx);
+uint8_t updateEEMacroHID(const uint8_t macro[MACRO_MAX_LEN], uint8_t idx);
+uint8_t readEEMacroHID  (uint8_t macro[MACRO_MAX_LEN], uint8_t idx);
 /// shortcut to put macro directly in print buffer
 uint8_t printMacro(uint8_t idx);
 
-bool initMacros(void);
 void printMacros(void);
 
 void setMacroMode(bool on);
