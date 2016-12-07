@@ -58,7 +58,6 @@ void setCommandMode(bool on)
             g_led = led_save;
         }
     }
-
     command=on;
     subcmd = SUB_NONE;
 }
@@ -151,6 +150,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
 
 #ifdef PS2MOUSE
         case 'm':
+            // @TODO  only activate if init worked!
             g_mouse_enabled = g_mouse_enabled > 0 ? 0 : 1;
             printf("Mouse %sabled\n", g_mouse_enabled ? "en" : "dis");
             setCommandMode(false);
