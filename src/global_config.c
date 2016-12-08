@@ -44,6 +44,13 @@ void init_config()
     // load defined defaults
     g_cfg.tp_axis = TP_AXES;
 
+    // trackpoint defaults from firmware
+    // Usable on RT: 28/128 207 13 (decimal)
+    g_cfg.sens  = TP_DEF_SENS;   // 0x80
+    g_cfg.sensL = 28;            // custom
+    g_cfg.speed = TP_DEF_SPEED;  // 0x61
+    g_cfg.thres = TP_DEF_THRESH; // 0x08 
+
     print_config();
 
     // check that eeprom version matches firmware
