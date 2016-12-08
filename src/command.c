@@ -280,7 +280,8 @@ void handleSubCmd(char c)
             #endif
 
             switch(c) {
-
+                case 'S': save_config(&g_cfg); break;
+                case 'L': load_config(&g_cfg); break;
               #ifdef PS2MOUSE
                 // change sensitivity for initial and normal operation
                 ///@TODO generic interface, always allow '0' (no %256)
@@ -310,6 +311,7 @@ void handleSubCmd(char c)
                     setCommandMode(false);
                     break;    
             }
+            print_config();
             break; // allow consecutive changes to variables
 
         default:
