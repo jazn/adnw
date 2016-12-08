@@ -23,7 +23,7 @@ SRCDIR       = ./src
 # Keyboard selection below: Override from environment variable
 # -----------------------------------------------------------
 KB_HW_SUPPORTED = BLUECUBE HYPERNANO REDTILT HYPERMICRO BLACKFLAT
-KB_HW		 ?= BLACKFLAT
+KB_HW		 ?= REDTILT
 
 
 # List C source files here. (C dependencies are automatically generated.)
@@ -46,7 +46,7 @@ SRC =   $(LUFA_SRC_USB)          \
 
 LUFA_PATH    = LUFA/LUFA
 CC_FLAGS     = -DUSE_LUFA_CONFIG_HEADER -IConfig/
-#CC_FLAGS    += -DDEBUG_OUTPUT
+CC_FLAGS    += -DDEBUG_OUTPUT
 CC_FLAGS    += -fdata-sections 
 CC_FLAGS    += -Werror
 CC_FLAGS	+= -DKB_HW=$(KB_HW) -D$(KB_HW)
