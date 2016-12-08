@@ -97,6 +97,12 @@ The following commands need further input:
     * On first call the master password must be entered. A check against given test data is performed.
     * Subsequent calls take arguments as tag [length [mode]]
 
+- c Config
+    * @see SUB_CONFIG in src/command.c for details
+    * Must "save" for persistent storage of changes in EEPROM
+    * Default LED mode 
+    * Full TrackPoint configuration of axes orientations and speed/sensitivity/threshold can be performed.
+
 
 Password Hash Support
 ---------------------
