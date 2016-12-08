@@ -41,6 +41,11 @@ void init_config()
         .tp_axis=0, .tp_config=0, 
     };
 
+    // load defined defaults
+    g_cfg.tp_axis = TP_AXES;
+
+    print_config();
+
     // check that eeprom version matches firmware
     // @TODO implement major/minor versioning to keep macros and other settings
     uint16_t magic = eeprom_read_word(EE_CFG_MAGIC);
