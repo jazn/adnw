@@ -137,12 +137,12 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
 #ifdef PINKYDROP
         case 'd':
             g_cfg.fw.pinkydrop = ! g_cfg.fw.pinkydrop;
-            printf("Pinkydrop %d\n", g_cfg.fw.pinkydrop);
+            xprintf("Pinkydrop %d\n", g_cfg.fw.pinkydrop);
             setCommandMode(false);
             break;
 #endif
         case 'v':
-            printf("AdNW %s\n", FW_VERSION);
+            xprintf("AdNW %s\n", FW_VERSION);
             setCommandMode(false);
             break;
         
@@ -164,7 +164,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
 #ifdef ALTERNATE_LAYER
         case 'l':
             g_cfg.fw.alt_layer = !g_cfg.fw.alt_layer;
-            printf("AltL %s\n", g_cfg.fw.alt_layer ? "on" : "off");
+            xprintf("AltL %s\n", g_cfg.fw.alt_layer ? "on" : "off");
             setCommandMode(false);
             break;
 #endif
@@ -173,7 +173,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
         case 'm':
             // @TODO  only activate if init worked!
             g_cfg.fw.mouse_enabled = !g_cfg.fw.mouse_enabled;
-            printf("Mouse %sabled\n", g_cfg.fw.mouse_enabled ? "en" : "dis");
+            xprintf("Mouse %sabled\n", g_cfg.fw.mouse_enabled ? "en" : "dis");
             setCommandMode(false);
             break;
 #endif
@@ -181,7 +181,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
             subcmd=SUB_MACRO;
             break;
         case 'r':
-            printf("Rec macro\n");
+            xprintf("Rec macro\n");
             subcmd=SUB_MACRO_REC;
             break;
         case 'h':
@@ -190,7 +190,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
             memset(ph_input,0,PH_INPUT_LEN);
             subcmd=SUB_PASSHASH;
 #else
-            printf("PassHash inactive\n");
+            xprintf("PassHash inactive\n");
             setCommandMode(false);
 #endif
             break;
@@ -233,7 +233,7 @@ void handleSubCmd(char c)
                     // only return was pressed -> clear master password and return
                     memset(ph_master_pw,0,PH_PW_LEN);
                     passhash_pw_entered = false;
-                    printf("PH clear\n");
+                    xprintf("PH clear\n");
                     return;
                 }
 
@@ -275,8 +275,7 @@ void handleSubCmd(char c)
                 case 'I': init_config(); break;
                 case 'S': save_config(&g_cfg); break;
                 case 'L': load_config(&g_cfg); break;
-                case 'm': 
-                          printf("\nMEM %d/%d", get_mem_unused_simple(), get_mem_unused()); break;
+                case 'm': xprintf("\nMEM: %d/%d", get_mem_unused_simple(), get_mem_unused()); break;
               #ifdef PS2MOUSE
                 // change sensitivity for initial and normal operation
                 ///@TODO generic interface, always allow '0' (no %256)
@@ -297,7 +296,7 @@ void handleSubCmd(char c)
               #endif
 
               #ifdef HAS_LED
-                printf("\nLED: %d/%d@%d",led_save.on, led_save.off, led_save.brightness);
+                xprintf("\nLED: %d/%d@%d",led_save.on, led_save.off, led_save.brightness);
                 // Operate on the saved config that will be restored when leaving command mode
                 case 'j': led_save.off = (led_save.off-5) % 256; break;
                 case 'J': led_save.off = (led_save.off+5) % 256; break;
