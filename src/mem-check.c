@@ -1,27 +1,28 @@
 #include <avr/io.h>  // RAMEND
 #include "mem-check.h"
 
-// Mask to init SRAM and check against
-#define MASK 0xaa
-
-// From linker script
 extern unsigned char __heap_start;
 
 // !!! This doesn't work together with malloc et.al. (whose use is
 // !!! discouraged on AVR, anyway). alloca, however, is no problem
 // !!! because it allocates on stack.
-
-uint16_t get_free_mem(void)
+uint16_t get_mem_unused_simple(void)
 {
     return SP - (uint16_t) &__heap_start;
 }
 
+#ifndef DEBUG_OUTPUT
+    uint16_t get_mem_unused(void) { return 0; };
+#else
+// Mask to init SRAM and check against
+#define MASK 0xaa
+
+// From linker script
 // Get minimum of free memory (in bytes) up to now.
-unsigned short 
-get_mem_unused (void)
+uint16_t get_mem_unused (void)
 {
-   unsigned short unused = 0;
-   unsigned char *p = &__heap_start;
+   uint16_t unused = 0;
+   uint8_t  *p = &__heap_start;
 
    do
    {
@@ -29,7 +30,7 @@ get_mem_unused (void)
          break;
 
       unused++;
-   } while (p <= (unsigned char*) RAMEND);
+   } while (p <= (uint8_t *) RAMEND);
 
    return unused;
 }
@@ -55,4 +56,4 @@ init_mem (void)
          : "i" (MASK), "i" (RAMEND)
    );
 }
-
+#endif

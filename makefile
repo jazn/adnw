@@ -41,6 +41,7 @@ SRC =   $(LUFA_SRC_USB)          \
 	$(SRCDIR)/passhash/hmac-sha1.c  \
 	$(SRCDIR)/passhash/passhash.c  \
 	$(SRCDIR)/global_config.c      \
+	$(SRCDIR)/mem-check.c 		   \
 
 
 LUFA_PATH    = LUFA/LUFA
@@ -72,7 +73,6 @@ endif
 
 ifneq (,$(findstring DEBUG_OUTPUT,$(CC_FLAGS)))
 	SRC += $(SRCDIR)/hhstdio.c \
-		   $(SRCDIR)/mem-check.c \
 		   $(SRCDIR)/dbg.c
 endif
 
