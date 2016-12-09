@@ -1,10 +1,10 @@
 #include "dbg.h"
-#include "hhstdio.h"
 
 #ifdef DEBUG_OUTPUT
 uint8_t DBG__get_report(USB_DBGReport_Data_t *report_data)
 {
     /// @todo Remove DBGReport altogether if no debug
+    /*
     if (!stdout_is_empty()) {
         char ch;
         int index = 0;
@@ -12,6 +12,7 @@ uint8_t DBG__get_report(USB_DBGReport_Data_t *report_data)
             report_data->data[index++] = ch;
         }
     }
+    */
 
     return sizeof(USB_DBGReport_Data_t);
 }

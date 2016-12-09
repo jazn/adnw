@@ -72,7 +72,7 @@ CC_FLAGS    += -DPS2MOUSE
 endif
 
 ifneq (,$(findstring DEBUG_OUTPUT,$(CC_FLAGS)))
-	SRC += $(SRCDIR)/hhstdio.c \
+	SRC += \
 		   $(SRCDIR)/print.c \
 		   $(SRCDIR)/xprintf.S \
 		   $(SRCDIR)/dbg.c

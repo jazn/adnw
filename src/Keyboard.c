@@ -163,7 +163,94 @@ static void __attribute__ ((noreturn)) main_loop(void)
     }
 }
 
+// fixes for tmk include
+#define CONSOLE_ENABLE DEBUG_OUTPUT
+#define CONSOLE_IN_EPNUM DBG_IN_EPNUM
 
+
+
+/*******************************************************************************
+ * Console
+ ******************************************************************************/
+static void Console_Task(void) __attribute__((unused));
+#ifdef CONSOLE_ENABLE
+static void Console_Task(void)
+{
+    /* Device must be connected and configured for the task to run */
+    if (USB_DeviceState != DEVICE_STATE_Configured)
+        return;
+
+    uint8_t ep = Endpoint_GetCurrentEndpoint();
+
+#if 0
+    // TODO: impl receivechar()/recvchar()
+    Endpoint_SelectEndpoint(CONSOLE_OUT_EPNUM);
+
+    /* Check to see if a packet has been sent from the host */
+    if (Endpoint_IsOUTReceived())
+    {
+        /* Check to see if the packet contains data */
+        if (Endpoint_IsReadWriteAllowed())
+        {
+            /* Create a temporary buffer to hold the read in report from the host */
+            uint8_t ConsoleData[CONSOLE_EPSIZE];
+
+            /* Read Console Report Data */
+            Endpoint_Read_Stream_LE(&ConsoleData, sizeof(ConsoleData), NULL);
+
+            /* Process Console Report Data */
+            //ProcessConsoleHIDReport(ConsoleData);
+        }
+
+        /* Finalize the stream transfer to send the last packet */
+        Endpoint_ClearOUT();
+    }
+#endif
+
+    /* IN packet */
+    Endpoint_SelectEndpoint(CONSOLE_IN_EPNUM);
+    if (!Endpoint_IsEnabled() || !Endpoint_IsConfigured()) {
+        Endpoint_SelectEndpoint(ep);
+        return;
+    }
+
+    // fill empty bank
+    while (Endpoint_IsReadWriteAllowed())
+        Endpoint_Write_8(0);
+
+    // flash senchar packet
+    if (Endpoint_IsINReady()) {
+        Endpoint_ClearIN();
+    }
+
+    Endpoint_SelectEndpoint(ep);
+}
+#else
+static void Console_Task(void)
+{
+}
+#endif
+
+#ifdef DEBUG_OUTPUT
+static bool console_flush = false;
+#define CONSOLE_FLUSH_SET(b)   do { \
+    uint8_t sreg = SREG; cli(); console_flush = b; SREG = sreg; \
+} while (0)
+
+/*
+// called every 1ms
+void EVENT_USB_Device_StartOfFrame(void)
+{
+    static uint8_t count;
+    if (++count % 50) return;
+    count = 0;
+
+    if (!console_flush) return;
+    Console_Task();
+    console_flush = false;
+}
+*/
+#endif
 /*******************************************************************************
  * sendchar
  ******************************************************************************/
@@ -186,7 +273,7 @@ int8_t sendchar(uint8_t c)
         return -1;
 
     uint8_t ep = Endpoint_GetCurrentEndpoint();
-    Endpoint_SelectEndpoint(CONSOLE_IN_EPNUM);
+    Endpoint_SelectEndpoint(DBG_IN_EPNUM);
     if (!Endpoint_IsEnabled() || !Endpoint_IsConfigured()) {
         goto ERROR_EXIT;
     }
@@ -237,7 +324,6 @@ int8_t sendchar(uint8_t c)
     return 0;
 }
 #endif
-
 
 
 int main(void)
@@ -370,7 +456,15 @@ void EVENT_USB_Device_StartOfFrame(void)
 {
     HID_Device_MillisecondElapsed(&Keyboard_HID_Interface);
 #ifdef DEBUG_OUTPUT
+    ///@TODO TMK see StartOffFrame below
     HID_Device_MillisecondElapsed(&DBG_HID_Interface);
+    static uint8_t count;
+    if (++count % 50) return;
+    count = 0;
+
+    if (!console_flush) return;
+    Console_Task();
+    console_flush = false;
 #endif
     HID_Device_MillisecondElapsed(&Mouse_HID_Interface);
 }
