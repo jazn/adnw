@@ -163,6 +163,83 @@ static void __attribute__ ((noreturn)) main_loop(void)
     }
 }
 
+
+/*******************************************************************************
+ * sendchar
+ ******************************************************************************/
+#ifdef DEBUG_OUTPUT
+#define SEND_TIMEOUT 5
+int8_t sendchar(uint8_t c)
+{
+#ifdef LUFA_DEBUG_SUART
+    xmit(c);
+#endif
+    // Not wait once timeouted.
+    // Because sendchar() is called so many times, waiting each call causes big lag.
+    static bool timeouted = false;
+
+    // prevents Console_Task() from running during sendchar() runs.
+    // or char will be lost. These two function is mutually exclusive.
+    CONSOLE_FLUSH_SET(false);
+
+    if (USB_DeviceState != DEVICE_STATE_Configured)
+        return -1;
+
+    uint8_t ep = Endpoint_GetCurrentEndpoint();
+    Endpoint_SelectEndpoint(CONSOLE_IN_EPNUM);
+    if (!Endpoint_IsEnabled() || !Endpoint_IsConfigured()) {
+        goto ERROR_EXIT;
+    }
+
+    if (timeouted && !Endpoint_IsReadWriteAllowed()) {
+        goto ERROR_EXIT;
+    }
+
+    timeouted = false;
+
+    uint8_t timeout = SEND_TIMEOUT;
+    while (!Endpoint_IsReadWriteAllowed()) {
+        if (USB_DeviceState != DEVICE_STATE_Configured) {
+            goto ERROR_EXIT;
+        }
+        if (Endpoint_IsStalled()) {
+            goto ERROR_EXIT;
+        }
+        if (!(timeout--)) {
+            timeouted = true;
+            goto ERROR_EXIT;
+        }
+        _delay_ms(1);
+    }
+
+    Endpoint_Write_8(c);
+
+    // send when bank is full
+    if (!Endpoint_IsReadWriteAllowed()) {
+        while (!(Endpoint_IsINReady()));
+        Endpoint_ClearIN();
+    } else {
+        CONSOLE_FLUSH_SET(true);
+    }
+
+    Endpoint_SelectEndpoint(ep);
+    return 0;
+ERROR_EXIT:
+    Endpoint_SelectEndpoint(ep);
+    return -1;
+}
+#else
+int8_t sendchar(uint8_t c)
+{
+#ifdef LUFA_DEBUG_SUART
+    xmit(c);
+#endif
+    return 0;
+}
+#endif
+
+
+
 int main(void)
 {
     main_loop();
@@ -212,6 +289,10 @@ void SetupHardware()
 
     /* Disable clock division */
     clock_prescale_set(clock_div_1);
+#endif
+   
+#ifdef DEBUG_OUTPUT 
+    print_set_sendchar(sendchar);
 #endif
 
     /* Hardware Initialization */
