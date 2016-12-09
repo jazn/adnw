@@ -26,6 +26,7 @@
 #include "jump_bootloader.h"
 #include "passhash/passhash.h"
 #include "_private_data.h"
+#include "dbg.h"
 
 #ifdef PS2MOUSE
     #include "trackpoint.h"
@@ -274,6 +275,8 @@ void handleSubCmd(char c)
                 case 'I': init_config(); break;
                 case 'S': save_config(&g_cfg); break;
                 case 'L': load_config(&g_cfg); break;
+                case 'm': 
+                          printf("\nMEM %d/%d", get_free_mem(), get_mem_unused()); break;
               #ifdef PS2MOUSE
                 // change sensitivity for initial and normal operation
                 ///@TODO generic interface, always allow '0' (no %256)

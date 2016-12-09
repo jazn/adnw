@@ -72,6 +72,7 @@ endif
 
 ifneq (,$(findstring DEBUG_OUTPUT,$(CC_FLAGS)))
 	SRC += $(SRCDIR)/hhstdio.c \
+		   $(SRCDIR)/mem-check.c \
 		   $(SRCDIR)/dbg.c
 endif
 
