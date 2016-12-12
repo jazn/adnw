@@ -3,8 +3,6 @@
 
 #include "print.h"
 
-#define printf(...) 
-
 /// define DEBUG_OUTPUT in makefile to enable printf() for hid_listen.
 #ifdef DEBUG_OUTPUT
     #include "Descriptors.h"
