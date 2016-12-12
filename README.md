@@ -43,6 +43,8 @@ It is compatible with the [Twik][twik_home] implementations for [Android][twik_a
 
 It uses hmac-sha1 and sha1 implementations from [avr-crypto-lib][avr_crypto_lib], licensed under GPL3.
 
+xprintf implementation from http://elm-chan.org/fsw/strf/xprintf.html
+
 License
 -------
 Unless otherwise mentioned all code is licensed under GPL3.
