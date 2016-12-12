@@ -1,6 +1,7 @@
 #include <util/twi.h>
 #include <stdbool.h>
-#include "print.h"
+#include <stddef.h> // size_t
+#include "../dbg.h"
 #include "mcp23018.h"
 #include <util/delay.h>
 #include <math.h>
@@ -16,6 +17,9 @@ static bool mcp23018_sendbyte(uint8_t data);
 static bool mcp23018_readbyte_nack(uint8_t *data);
 
 static bool _twi_read(uint8_t *data);
+
+static uint8_t  TWI_MCP23018_CONTROLBYTEWRITE;
+static uint8_t  TWI_MCP23018_CONTROLBYTEREAD;
 
 void twi_init(void) {
   TWSR = 0; //prescaler 0
@@ -73,9 +77,7 @@ bool twi_send(uint8_t data) {
     case TW_MR_SLA_ACK:  //SLA+R transmitted, ACK received
       return true;
     default:
-      print("TWI/I2C: twi_send failed (");
-      phex(TW_STATUS);
-      print(")\n");
+      printf("TWI/I2C: twi_send failed (%x)\n", TW_STATUS);
       return false;
   }
   return false;
@@ -109,9 +111,7 @@ fail:
 }
 
 void twi_print_error(const char *data) {
-  print_P(data);
-  print(" (");
-  char *errorCode;
+  char *errorCode __attribute__((unused)); // nothing in debug
   switch(TW_STATUS) {
     case TW_MR_DATA_NACK: errorCode = "TW_MR_DATA_NACK"; break;
     case TW_BUS_ERROR: errorCode = "TW_BUS_ERROR"; break;
@@ -119,9 +119,7 @@ void twi_print_error(const char *data) {
     default:
       errorCode = "unknown";
   }
-  print_P(errorCode);
-  print(")");
-
+  printf("%s (%s)", data, errorCode);
 }
 
 #ifdef USE_TWI_STOP
@@ -226,7 +224,16 @@ fail:
   return false;
 }
 
+bool mcp23018_init_addr(uint8_t addr ) {
+    // addr is 0x40 for MCP23018 + 3 hw address bits << 1 plus 0x01 for read
+    TWI_MCP23018_CONTROLBYTEWRITE = addr;
+    TWI_MCP23018_CONTROLBYTEREAD  = addr+1; // 0b1000001 | (addr<<1);
+    return mcp23018_init();
+}
+
 bool mcp23018_init() {
+
+
 #ifdef TWI_DEBUG
   print("mcp23018 init\n");
 #endif
@@ -302,7 +309,7 @@ bool mcp23018_col_low(uint8_t n) {
 #ifdef TWI_DEBUG
   print("mcp23018_col_low\n");
 #endif
-  if (n > 6) goto fail;
+  if (n > 8) goto fail;
 
   //make sure that pullups are properly configured
   if (!mcp23018_write_register(GPPUA,0x00)) goto fail; // GPPU 0 = pullup disabled  1=enabled
@@ -365,3 +372,7 @@ fail:
   return false;
 }
 #endif
+
+
+
+
