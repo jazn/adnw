@@ -106,9 +106,7 @@ static inline bool init_cols(void)
                 i2c_adr[i2c_left] = adr; 
                 i2c_left = !i2c_left;
             }
-            _delay_ms(50);
         }
-        _delay_ms(250);
     } while (i2c_adr[1] == 0xFF && --retries>0 );
 
     if(i2c_adr[1] == 0xFF) // did not find second one
