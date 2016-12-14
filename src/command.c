@@ -86,7 +86,11 @@ void handleSubCmd(char c);
 
 /** Called when command mode is active.
  *
+ *  Key is mapped according to modifiers, but better stick to ascii?
  *  First pressed key is mapped to first layer defined and evaluated. Use only a-z and 0-9 for commands, others exit this mode.
+ *
+ *  Leave by calling setCommandMode(false) on one-off commands, otherwise any unmapped key or
+ *  'q' quit the loop. Don't for adjusting config variables through multiple presses.
  *
  *  @todo: leave automatically on unknown command or timeout, or signal mode through leds.
  *
@@ -141,9 +145,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
             printf("AdNW %s\n", FW_VERSION);
             setCommandMode(false);
             break;
-        case 'q':
-            setCommandMode(false);
-            break;
+        
         case 'b':
             jump_bootloader();
             break;
@@ -194,6 +196,8 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
 #endif
             break;
 
+
+        case 'q':
         default:
             setCommandMode(false);
             break;

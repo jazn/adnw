@@ -29,3 +29,5 @@ src/_private_macros.h
 *.orig
 *.rej
 src/_private_data.h
+adnw.bin
+*.swp
