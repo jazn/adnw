@@ -108,7 +108,7 @@ ifneq ("$(wildcard $(SRCDIR)/_private_data.h)","")
 	@echo "*** Private data definition found ";  
 else 
 	@echo "\n*** PRIVATE DATA $(SRCDIR)/_private_data.h NOT found. \n*** Creating default one. Please edit template to your needs (file is ignored in git).\n\n"; 
-	@cp $(SRCDIR)/_private_data.h.template $(SRCDIR)/_private_data.h ;
+	@cp $(SRCDIR)/_private_data_template.h $(SRCDIR)/_private_data.h ;
 	@chmod 600 $(SRCDIR)/_private_data.h ;
 	@false;
 endif
