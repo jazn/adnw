@@ -171,8 +171,16 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
             subcmd=SUB_MACRO_REC;
             break;
         case 'h':
+            /// only generate passhash if a private key was defined during compile and
+            /// the master password was entered.
+            /// @TODO read password from user, maybe renew periodically
+#ifdef PH_ENABLED
             memset(tag,0,TAGLEN);
             subcmd=SUB_PASSHASH;
+#else
+            printf("PassHash inactive\n");
+            setCommandMode(false);
+#endif
             break;
 
         default:
@@ -196,6 +204,7 @@ void handleSubCmd(char c)
             if(!setMacroRecording(((uint8_t)c)%MACROCOUNT))
                 setCommandMode(false);
             break;
+#ifdef PH_ENABLED
         case SUB_PASSHASH:
             // read until return=10 is pressed or maximum length reached
             if( (uint8_t)(c) != 10 && strlen(tag) < TAGLEN) {
@@ -216,7 +225,9 @@ void handleSubCmd(char c)
                 if(type<PH_TYPE_ALNUMSYM||type>PH_TYPE_NUM)
                     type=PH_TYPE_ALNUMSYM;
                 /// @todo secret and key from compileflag or EEPROM.
-                uint8_t ret = passHash(password, (uint8_t)len, (uint8_t)type, "secret", "key", splitTag);
+                /// PH_PRIV_KEY  "secret" is the Twik private key of a profile
+                /// PH_MASTER_PW "key" is the master password needed to create pass hashes for a tag
+                uint8_t ret = passHash(password, (uint8_t)len, (uint8_t)type, PH_PRIV_KEY, PH_MASTER_PW, splitTag);
                 if(ret==0) {
                     //printf("PH len=%d tag=%s type=%d = %s\n", len, splitTag, type, password);
                     setOutputString(password);
@@ -224,6 +235,7 @@ void handleSubCmd(char c)
                 memset(tag,0,TAGLEN);
             }
             break;
+#endif
         
         case SUB_CONFIG:
             #ifdef HAS_LED

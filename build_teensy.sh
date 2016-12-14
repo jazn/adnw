@@ -22,7 +22,7 @@ if [ ! -z $1 ]; then
 	make clean >> log
 fi
 echo "*** make " &&
-make >> log 2>log.err || { tail -n 10 log.err; echo "*** BUILD FAILED, see log.err." ; exit 2; }
+make $@ >> log 2>log.err || { tail -n 10 log.err; echo "*** BUILD FAILED, see log.err." ; exit 2; }
 
 KB=$(grep "KB_HW defined" log | sed "s/^.*defined as //")
 
