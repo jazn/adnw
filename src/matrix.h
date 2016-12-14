@@ -41,7 +41,7 @@
 #include "config.h"
     
 #ifdef BLACKBOWL
-#include "external/mcp23018.h"
+#include "mcp23018.h"
 
 // these are the initially tested hardwired addresses that should work
 // 0x46 -> 3 on chip=left side, 0x4E -> 7 on chip (VCC) = right side
