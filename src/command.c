@@ -25,6 +25,7 @@
 #include "trackpoint.h"
 #include "jump_bootloader.h"
 #include "passhash/passhash.h"
+#include "_private_data.h"
 
 #ifdef PS2MOUSE
     #include "trackpoint.h"
