@@ -790,7 +790,7 @@ void init_active_keys()
 
 void hostLEDChange(uint8_t leds)
 {
-//    xprintf("\nLED 0x%02x, C%d N%d S%d", leds, (leds & HID_KEYBOARD_LED_CAPSLOCK)>0,
+//    xprintf("\nLED 0x%02X, C%d N%d S%d", leds, (leds & HID_KEYBOARD_LED_CAPSLOCK)>0,
 //                  (leds & HID_KEYBOARD_LED_NUMLOCK)>0, (leds & HID_KEYBOARD_LED_SCROLLLOCK)>0);
 }
 
