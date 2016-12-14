@@ -70,8 +70,8 @@ endif
 
 ifneq (,$(findstring BLACKBOWL,$(CC_FLAGS)))
 CC_FLAGS    += -DPS2MOUSE
-#PS2_USE_USART = yes # uses primitive reference code
-PS2_USE_BUSYWAIT = yes # uses primitive reference code
+PS2_USE_USART = yes # uses primitive reference code
+#PS2_USE_BUSYWAIT = yes # uses primitive reference code
 endif
 
 ifneq (,$(findstring HYPERNANO,$(CC_FLAGS)))

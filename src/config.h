@@ -135,7 +135,8 @@ enum { TP_PTS=0, TP_HALFTAC, TP_BTN2, TP_FLIPX, TP_FLIPY, TP_FLIPZ, TP_RES, TP_F
 
 #elif defined BLACKBOWL
     #define HAS_I2C
-    #define TP_AXIES (1<<TP_PTS | 1<<TP_FLIPY)
+    // flip only on busywait, with usart not needed?
+    #define TP_AXES (1<<TP_PTS | 1<<TP_FLIPY)
 
     /* XCK for clock line and RXD for data line */
     #define PS2_DATA_PORT_LETTER  D
