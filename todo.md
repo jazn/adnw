@@ -73,6 +73,7 @@ Git
 Macro
 -----
 * dedicated macro key instead ob subcommands?
+* Macro not index based but for each character?
 
 Commandmode
 -----------
