@@ -134,6 +134,7 @@ enum { TP_PTS=0, TP_HALFTAC, TP_BTN2, TP_FLIPX, TP_FLIPY, TP_FLIPZ, TP_RES, TP_F
     // no RESET pin, dedicated circuitry is attached
 
 #elif defined BLACKBOWL
+    #define HAS_LED //@TODO LED port configurable 
     #define HAS_I2C
     // flip only on busywait, with usart not needed?
     #define TP_AXES (1<<TP_PTS | 1<<TP_FLIPY)
@@ -144,9 +145,6 @@ enum { TP_PTS=0, TP_HALFTAC, TP_BTN2, TP_FLIPX, TP_FLIPY, TP_FLIPZ, TP_RES, TP_F
     #define PS2_CLOCK_PORT_LETTER D
     #define PS2_CLOCK_BIT    5
 
-    // RESET pin, but should use dedicated circuitry instead
-    #define PS2_RESET_PORT_LETTER B
-    #define PS2_RESET_BIT    0
 #endif
     
 
