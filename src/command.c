@@ -226,7 +226,7 @@ void handleSubCmd(char c)
                     return;
                 }
 
-                char password[PH_MAX_LEN+1];
+                char passhash[PH_MAX_LEN+1];
                 if( passhash_pw_entered == false ) {
                     sscanf(tag, "%s", ph_master_pw);
 #ifdef PH_TEST
@@ -247,12 +247,12 @@ void handleSubCmd(char c)
                     len=12;
                 if(type<PH_TYPE_ALNUMSYM||type>PH_TYPE_NUM)
                     type=PH_TYPE_ALNUMSYM;
-                /// PH_PRIVATE_KEY  "secret" is the Twik private key of a profile
-                /// ph_master_pw "key" is the master password needed to create pass hashes for a tag
-                uint8_t ret = passHash(password, (uint8_t)len, (uint8_t)type, PH_PRIVATE_KEY, ph_master_pw, splitTag);
+                /// PH_PRIVATE_KEY  is the Twik private key of a profile
+                /// ph_master_pw    is the master password needed to create pass hashes for a tag
+                uint8_t ret = passHash(passhash, (uint8_t)len, (uint8_t)type, PH_PRIVATE_KEY, ph_master_pw, splitTag);
                 if(ret==0) {
-                    //printf("PH len=%d tag=%s type=%d = %s\n", len, splitTag, type, password);
-                    setOutputString(password);
+                    //printf("PH len=%d tag=%s type=%d = %s\n", len, splitTag, type, passhash);
+                    setOutputString(passhash);
                 }
                 memset(tag,0,TAGLEN);
             }

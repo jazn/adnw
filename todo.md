@@ -125,6 +125,6 @@ Pinkydrop again ?!
 Passhash
 --------
 naming of key secret
-url and name of alternatives
-twik 
+allowed length of entries
 testcases
+error checks on all input...
