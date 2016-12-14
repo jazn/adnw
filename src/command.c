@@ -229,7 +229,9 @@ void handleSubCmd(char c)
                 char password[PH_MAX_LEN+1];
                 if( passhash_pw_entered == false ) {
                     sscanf(tag, "%s", ph_master_pw);
-                    if(verifyHash(PH_PRIVATE_KEY, ph_master_pw,  PH_TEST /*tag len type hash*/ ))
+#ifdef PH_TEST
+                    if(verifyHash(PH_PRIVATE_KEY, ph_master_pw,  PH_TEST /*tag len mode hash*/ ))
+#endif
                         passhash_pw_entered = true;
 
                     return;
