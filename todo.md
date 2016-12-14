@@ -121,3 +121,9 @@ Unsorted
 Testcases/mode
 Pinkydrop again ?!
 
+Passhash
+--------
+naming of key secret
+url and name of alternatives
+twik 
+testcases
