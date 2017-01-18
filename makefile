@@ -37,7 +37,7 @@ SRC =   $(LUFA_SRC_USB)          \
 	$(SRCDIR)/command.c          \
 	$(SRCDIR)/mousekey.c         \
 	$(SRCDIR)/jump_bootloader.c  \
-	$(SRCDIR)/passhash/sha1.c    \
+	$(SRCDIR)/passhash/sha1-asm.S \
 	$(SRCDIR)/passhash/hmac-sha1.c  \
 	$(SRCDIR)/passhash/passhash.c  \
 	$(SRCDIR)/external/i2cmaster/twimaster.c \
