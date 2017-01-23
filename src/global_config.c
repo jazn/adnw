@@ -40,7 +40,7 @@ void init_config()
     g_cfg = (kb_cfg_t) { 
         .magic=EE_CFG_MAGIC_NUM, .fw.raw=0, 
         .tp_axis.raw=0, .tp_config.raw=0, 
-        .led = (led_t) { .brightness=5, .on=0, .off=60 } 
+        .led = (led_t) { .r=0, .g=5, .b=0, .on=0, .off=60 } 
     };
 
     // load defined defaults

@@ -62,7 +62,7 @@ void setCommandMode(bool on)
     if(on!=g_cmd_mode_active) {
         if(on) {
             led_save = g_cfg.led;
-            g_cfg.led = (led_t) { .brightness=5, .on=30,  .off=30 };
+            g_cfg.led = (led_t) { .r=5, .g=0, .b=0, .on=30,  .off=30 };
         } else {
             g_cfg.led = led_save;
         }
