@@ -156,7 +156,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
 #ifdef ALTERNATE_LAYER
         case 'l':
             g_cfg.fw.alt_layer = !g_cfg.fw.alt_layer;
-            xprintf("AltL %s\n", g_cfg.fw.alt_layer ? "on" : "off");
+            //xprintf("AltL %s\n", g_cfg.fw.alt_layer ? "on" : "off");
             setCommandMode(false);
             break;
 #endif
@@ -170,7 +170,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
                     g_cfg.fw.mouse_enabled = ps2_init_mouse();
                 }
                 
-                xprintf("\nMouse %sabled", g_cfg.fw.mouse_enabled ? "en" : "dis");
+                //xprintf("\nMouse %sabled", g_cfg.fw.mouse_enabled ? "en" : "dis");
                 setCommandMode(false);
             }
             break;
@@ -179,7 +179,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
             subcmd=SUB_MACRO;
             break;
         case 'r':
-            xprintf("Rec macro\n");
+            //xprintf("Rec macro\n");
             subcmd=SUB_MACRO_REC;
             break;
         case 'h':
@@ -190,7 +190,7 @@ bool handleCommand(uint8_t hid_now, uint8_t mod_now)
             memset(tag,0,TAGLEN);
             subcmd=SUB_PASSHASH;
 #else
-            xprintf("PassHash inactive\n");
+            //xprintf("PassHash inactive\n");
             setCommandMode(false);
 #endif
             break;
@@ -251,7 +251,7 @@ void handleSubCmd(char c)
                     // only return was pressed -> clear master password and return
                     memset(ph_master_pw,0,PH_PW_LEN);
                     passhash_pw_entered = false;
-                    xprintf("PH clear\n");
+                    //xprintf("PH clear\n");
                     return;
                 }
 
