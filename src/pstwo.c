@@ -22,8 +22,9 @@
 **********************************************************************************/
 
 #include<avr/io.h>
-#include "pstwo.h"
 #include<util/delay.h>
+
+#include "pstwo.h"
 
 // >42590 to register connected TP correctly
 // <50000 to not hang if no TP connected

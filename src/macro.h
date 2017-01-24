@@ -20,6 +20,8 @@
 #ifndef MACRO_H
 #define MACRO_H 1
 
+#include <LUFA/Drivers/USB/Class/Device/HIDClassDevice.h>
+
 #include <stdint.h>
 #include <stdbool.h>
 #include <avr/eeprom.h>
