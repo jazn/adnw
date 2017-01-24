@@ -20,12 +20,9 @@ TARGET       = adnw
 SRCDIR       = ./src
 
 # -----------------------------------------------------------
-# Keyboard selection below: HYPERNANO, BLUECUBE or REDTILT
-# HYPERMICRO by 7bit
+# Keyboard selection below: Override from environment variable
 # -----------------------------------------------------------
-#KB_HW		 = BLUECUBE
-#KB_HW		 = HYPERNANO
-#KB_HW		 = REDTILT
+KB_HW_SUPPORTED = BLUECUBE HYPERNANO REDTILT HYPERMICRO
 KB_HW		 ?= HYPERMICRO
 
 # List C source files here. (C dependencies are automatically generated.)
@@ -111,11 +108,11 @@ lufacheck:
 	fi
 
 configtest:
-# check that KB_HW is defined
-ifeq ($(origin KB_HW), undefined)
-	$(error "KB_HW undefined. Either set in environment or makefile")
+# check that KB_HW is defined and valid
+ifneq (,$(filter $(KB_HW), $(KB_HW_SUPPORTED)))
+	@echo "*** KB_HW defined as \"$(KB_HW)\" from $(origin KB_HW)"
 else
-	@echo "*** KB_HW defined as ${KB_HW} from $(origin KB_HW)"
+	$(error *** KB_HW defined as "$(KB_HW)" not valid: not in $(KB_HW_SUPPORTED))
 endif
 
 
